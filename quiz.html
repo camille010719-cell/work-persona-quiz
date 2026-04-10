@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Persona Assessment</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f4f6f9;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    max-width: 520px;
+    width: 100%;
+    padding: 40px 36px;
+    text-align: center;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Front page */
+  .badge {
+    display: inline-block;
+    background: #0a66c2;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .byline {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 32px;
+  }
+
+  .byline a {
+    color: #0a66c2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .byline a:hover { text-decoration: underline; }
+
+  .btn {
+    display: inline-block;
+    background: #0a66c2;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn:hover { background: #084e96; }
+
+  /* Question screen */
+  .progress-bar-bg {
+    background: #e8edf3;
+    border-radius: 8px;
+    height: 6px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    background: #0a66c2;
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.4s ease;
+  }
+
+  .q-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0a66c2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.5;
+    margin-bottom: 36px;
+    min-height: 60px;
+  }
+
+  .choices {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .choice-btn {
+    flex: 1;
+    max-width: 180px;
+    padding: 14px 0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.18s;
+  }
+
+  .choice-btn.agree {
+    background: #e8f1fb;
+    color: #0a66c2;
+    border-color: #b6d0f0;
+  }
+
+  .choice-btn.agree:hover {
+    background: #0a66c2;
+    color: #fff;
+    border-color: #0a66c2;
+  }
+
+  .choice-btn.disagree {
+    background: #fdf0f0;
+    color: #c0392b;
+    border-color: #f1b8b3;
+  }
+
+  .choice-btn.disagree:hover {
+    background: #c0392b;
+    color: #fff;
+    border-color: #c0392b;
+  }
+
+  /* Result screen */
+  .result-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .result-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #0a66c2;
+    margin-bottom: 10px;
+  }
+
+  .result-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    text-align: left;
+    background: #f4f8ff;
+    border-left: 4px solid #0a66c2;
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: #0a66c2;
+    border: 2px solid #0a66c2;
+    border-radius: 24px;
+    padding: 12px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    background: #0a66c2;
+    color: #fff;
+  }
+
+  @media (max-width: 400px) {
+    .card { padding: 28px 18px; }
+    h1 { font-size: 21px; }
+    .q-text { font-size: 16px; }
+    .choices { flex-direction: column; align-items: center; }
+    .choice-btn { max-width: 100%; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Front page -->
+  <div class="screen active" id="screen-front">
+    <div class="badge">Assessment</div>
+    <h1>Work Persona Assessment</h1>
+    <p class="byline">
+      Built by Camille Li at
+      <a href="https://www.linkedin.com/in/camillelijiayi" target="_blank" rel="noopener">
+        linkedIn.com/in/camillelijiayi
+      </a>
+    </p>
+    <button class="btn" onclick="startQuiz()">Test</button>
+  </div>
+
+  <!-- Question screen -->
+  <div class="screen" id="screen-question">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="q-count" id="q-count"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices">
+      <button class="choice-btn agree" onclick="answer('agree')">Agree</button>
+      <button class="choice-btn disagree" onclick="answer('disagree')">Disagree</button>
+    </div>
+  </div>
+
+  <!-- Result screen -->
+  <div class="screen" id="screen-result">
+    <div class="result-icon">&#127775;</div>
+    <div class="result-label">Your Work Persona</div>
+    <div class="result-text" id="result-text"></div>
+    <button class="btn-outline" onclick="restart()">Retake Quiz</button>
+  </div>
+
+</div>
+
+<script>
+  var questions = [
+    "I don't mind being the first person in the room to raise objections.",
+    "I like to stay with what has proven to work and stay away from newly developed tools that has yet to show track record.",
+    "Instead of trying things out myself, I find myself better at delegating tasks to other people who know what they are doing."
+  ];
+
+  var mapping = [
+    { agree: 'B', disagree: 'K' },
+    { agree: 'R', disagree: 'I' },
+    { agree: 'C', disagree: 'E' }
+  ];
+
+  var results = {
+    "BIC": "You are unafraid of breaking the norm and innovative in your character. In addition, you seem to have more strengths in leading than trying things out by yourself. You may make a good change leader or frontline research in bigger companies/ traditional industries.",
+    "BIE": "You are unafraid of breaking the norm and innovative in your character. In addition, you are an executor. This is good material for entrepreneurship, frontline research, or creative work.",
+    "BRC": "You are unafraid of voicing out different opinions but more reserved when it comes to adopting new technology. You can be a trusted advisor for most on the technology adoption curve and may be more useful at a company at scale with your strength in task delegation.",
+    "BRE": "You are unafraid of voicing out different opinions but more reserved when it comes to adopting new technology. More grounded roles like running operations/ campaigns on the ground with a company that embraces discussions and different opinions would be good for you.",
+    "KIC": "You find safety in keeping things as is but can also be innovative in your approach. Combined with your ability to lead and manage, you can be a great strategic hire to a new company to scale it up from 1 to 100.",
+    "KIE": "You find safety in keeping things as is but can also be innovative in your approach. You can be a great executor in testing out new ideas and providing initial feedback.",
+    "KRC": "You find safety in keeping things as is and are more reserved when it comes to adopting new technologies. Combined with your skills to manage people, you may do better at mid-scale or above companies that are looking to scale up what they already do well.",
+    "KRE": "You find safety in keeping things as is and are more reserved when it comes to adopting new technologies. More grounded, traditional industries or more operational roles that are more scientific/ follow proven methodologies may give you more sense of security and value alignment. This is the steady, majority hire that most MNCs need."
+  };
+
+  var current = 0;
+  var combo = '';
+
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startQuiz() {
+    current = 0;
+    combo = '';
+    renderQuestion();
+    show('screen-question');
+  }
+
+  function renderQuestion() {
+    document.getElementById('q-count').textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
+    document.getElementById('q-text').textContent = questions[current];
+    var pct = (current / questions.length) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  function answer(choice) {
+    combo += mapping[current][choice];
+    current++;
+    if (current < questions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('progress-fill').style.width = '100%';
+    var text = results[combo] || 'Unknown combination.';
+    document.getElementById('result-text').textContent = text;
+    show('screen-result');
+  }
+
+  function restart() {
+    show('screen-front');
+  }
+</script>
+
+</body>
+</html>
